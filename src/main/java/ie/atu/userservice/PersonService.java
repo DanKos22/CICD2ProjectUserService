@@ -5,20 +5,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonService {
     PersonRepository personRepository;
 
-    private List<Person> personList = new ArrayList<>();
+    //private List<Person> personList = new ArrayList<>();
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
-    public List<Person> getPersonById(String id){
-        personRepository.findById(id);
-        return personRepository.findAll();
+    public Optional<Person> getPersonById(String id){
+        return personRepository.findById(id);
     }
 
     public List<Person>createPerson(Person person){

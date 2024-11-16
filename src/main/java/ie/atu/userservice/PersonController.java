@@ -2,11 +2,13 @@ package ie.atu.userservice;
 
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/people")
@@ -14,11 +16,14 @@ public class PersonController {
     private final PersonRepository personRepository;
     private final PersonService personService;
 
+    private AccountServiceClient accountServiceClient;
+
     List<Person> people = new ArrayList<>();
 
-    public PersonController(PersonRepository personRepository, PersonService personService) {
+    public PersonController(PersonRepository personRepository, PersonService personService, AccountServiceClient accountServiceClient) {
         this.personRepository = personRepository;
         this.personService = personService;
+        this.accountServiceClient = accountServiceClient;
     }
 
     @GetMapping
@@ -26,11 +31,11 @@ public class PersonController {
         return personRepository.findAll();
     }
 
-    //Return one person
+    //Return one person. Optional helps you to handle cases where a person might not exist
+    //while still returning a single person object when one is found
     @GetMapping("/{id}")
-    public ResponseEntity<List<Person>>getPersonById(@PathVariable String id){
-        people = personService.getPersonById(id);
-        return ResponseEntity.ok(people);
+    public Optional<Person> getPersonById(@PathVariable String id){
+        return personService.getPersonById(id);
     }
 
     @PostMapping
@@ -49,5 +54,12 @@ public class PersonController {
     public ResponseEntity<List<Person>>deletePerson(@PathVariable String id){
         people = personService.deletePerson(id);
         return ResponseEntity.ok(people);
+    }
+
+    //Get the message from Account Service
+    @PostMapping("/register-accounts")
+    public String registerAccounts(@RequestBody Person person){
+        String affirm = accountServiceClient.getDetails(person);
+        return affirm;
     }
 }
