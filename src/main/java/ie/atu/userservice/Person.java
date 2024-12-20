@@ -19,4 +19,5 @@ public class Person {
     private String name;
     @NotBlank(message = "Email is mandatory")
     private String email;
+    private String accountType;
 }
