@@ -17,13 +17,15 @@ public class PersonController {
     private final PersonService personService;
 
     private AccountServiceClient accountServiceClient;
+    private PaymentServiceClient paymentServiceClient;
 
     List<Person> people = new ArrayList<>();
 
-    public PersonController(PersonRepository personRepository, PersonService personService, AccountServiceClient accountServiceClient) {
+    public PersonController(PersonRepository personRepository, PersonService personService, AccountServiceClient accountServiceClient, PaymentServiceClient paymentServiceClient) {
         this.personRepository = personRepository;
         this.personService = personService;
         this.accountServiceClient = accountServiceClient;
+        this.paymentServiceClient = paymentServiceClient;
     }
 
     @GetMapping
@@ -61,5 +63,11 @@ public class PersonController {
     public String registerAccounts(@RequestBody Person person){
         String affirm = accountServiceClient.getDetails(person);
         return affirm;
+    }
+
+    @PostMapping("/payments-notifications")
+    public String notifyPayments(@Valid @RequestBody Payment payment){
+        String notification = paymentServiceClient.getPayments(payment);
+        return notification;
     }
 }
