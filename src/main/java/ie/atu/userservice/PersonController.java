@@ -2,6 +2,7 @@ package ie.atu.userservice;
 
 
 import jakarta.validation.Valid;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,7 @@ public class PersonController {
     }
 
     @PostMapping("/payments-notifications")
+    @RabbitListener(queues = "paymentQueue")
     public String notifyPayments(@Valid @RequestBody Payment payment){
         String notification = paymentServiceClient.getPayments(payment);
         return notification;
