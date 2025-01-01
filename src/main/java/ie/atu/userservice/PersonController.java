@@ -3,6 +3,7 @@ package ie.atu.userservice;
 
 import jakarta.validation.Valid;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +20,19 @@ public class PersonController {
 
     private AccountServiceClient accountServiceClient;
     private PaymentServiceClient paymentServiceClient;
+    private final PaymentNotificationListener paymentNotificationListener;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     List<Person> people = new ArrayList<>();
 
-    public PersonController(PersonRepository personRepository, PersonService personService, AccountServiceClient accountServiceClient, PaymentServiceClient paymentServiceClient) {
+    public PersonController(PersonRepository personRepository, PersonService personService, AccountServiceClient accountServiceClient, PaymentServiceClient paymentServiceClient, PaymentNotificationListener paymentNotificationListener, RabbitTemplate rabbitTemplate) {
         this.personRepository = personRepository;
         this.personService = personService;
         this.accountServiceClient = accountServiceClient;
         this.paymentServiceClient = paymentServiceClient;
+        this.paymentNotificationListener = paymentNotificationListener;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @GetMapping
@@ -66,10 +72,16 @@ public class PersonController {
         return affirm;
     }
 
-    @PostMapping("/payments-notifications")
-    @RabbitListener(queues = "paymentQueue")
+    /*@PostMapping("/payments-notifications")
     public String notifyPayments(@Valid @RequestBody Payment payment){
         String notification = paymentServiceClient.getPayments(payment);
         return notification;
-    }
+    }*/
+
+    /*@PostMapping("/payments-notifications")
+    public String getPaymentNotifications(@Valid @RequestBody Payment payment){
+        String messages = paymentNotificationListener.handlePaymentNotification();
+        rabbitTemplate.convertAndSend("paymentQueue", messages);
+        return messages;
+    }*/
 }
