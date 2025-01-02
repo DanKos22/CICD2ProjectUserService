@@ -78,10 +78,12 @@ public class PersonController {
         return notification;
     }*/
 
-    /*@PostMapping("/payments-notifications")
-    public String getPaymentNotifications(@Valid @RequestBody Payment payment){
-        String messages = paymentNotificationListener.handlePaymentNotification();
-        rabbitTemplate.convertAndSend("paymentQueue", messages);
-        return messages;
-    }*/
+
+    @PostMapping("/sendToAccountService")
+    public String accountInformation(@Valid @RequestBody Person person){
+        String accountInfo = String.format("Create account with the following details: Name: %s, Email: %s, Account Type: %s",
+                person.getName(), person.getEmail(), person.getAccountType());
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, "accountQueue", accountInfo);
+        return accountInfo;
+    }
 }
