@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
-    public static final String EXCHANGE = "paymentExchange";
+    public static final String EXCHANGE = "accountExchange";
 
     @Bean
     public Queue paymentQueue() {
-        return new Queue("paymentQueue", true);
+        return new Queue("accountQueue", true);
     }
 
     @Bean
@@ -41,7 +41,7 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding paymentQueueBinding(Queue paymentQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(paymentQueue).to(exchange).with("payment.#");
+    public Binding paymentQueueBinding(Queue accountQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(accountQueue).to(exchange).with("accountQueue");
     }
 }
