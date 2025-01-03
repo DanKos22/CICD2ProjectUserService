@@ -18,7 +18,7 @@ public class RabbitConfig {
     public static final String EXCHANGE = "accountExchange";
 
     @Bean
-    public Queue paymentQueue() {
+    public Queue accountQueue() {
         return new Queue("accountQueue", true);
     }
 
@@ -41,7 +41,7 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding paymentQueueBinding(Queue accountQueue, TopicExchange exchange) {
+    public Binding accountQueueBinding(Queue accountQueue, TopicExchange exchange) {
         return BindingBuilder.bind(accountQueue).to(exchange).with("accountQueue");
     }
 }
