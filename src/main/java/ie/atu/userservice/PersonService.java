@@ -1,6 +1,7 @@
 package ie.atu.userservice;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,10 +10,11 @@ import java.util.Optional;
 
 @Service
 public class PersonService {
-    PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     //private List<Person> personList = new ArrayList<>();
 
+    @Autowired
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
@@ -21,9 +23,9 @@ public class PersonService {
         return personRepository.findById(id);
     }
 
-    public List<Person>createPerson(Person person){
-        personRepository.save(person);
-        return personRepository.findAll();
+    public Person createPerson(Person person){
+        return personRepository.save(person);
+        //return personRepository.findAll();
     }
 
     public List<Person>updatePerson(String id, Person person){

@@ -18,11 +18,15 @@ jobs:
       - name: Get Jdk
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Package with Maven
         run: mvn clean package
+
+      #Step to run unit tests using Maven
+      - name: Run Unit Tests
+        run: mvn test
 
       #Part Two
       #Step to build Docker image

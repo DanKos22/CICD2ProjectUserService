@@ -48,9 +48,9 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Person>>createPerson(@Valid @RequestBody Person person){
-        people = personService.createPerson(person);
-        return ResponseEntity.ok(people);
+    public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person){
+        Person savedPerson = personService.createPerson(person);
+        return ResponseEntity.ok(savedPerson);
     }
 
     @PutMapping("/{id}")
