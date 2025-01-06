@@ -1,4 +1,4 @@
-name: Java first workflow
+name: Java first workflo
 
 on:
   push:
