@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "people")
 public class Person {
 
@@ -22,4 +24,6 @@ public class Person {
     private String email;
     @NotBlank(message = "Please enter the account type")
     private String accountType;
+
+
 }
