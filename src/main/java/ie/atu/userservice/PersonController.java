@@ -26,6 +26,7 @@ public class PersonController {
 
     List<Person> people = new ArrayList<>();
 
+    @Autowired
     public PersonController(PersonRepository personRepository, PersonService personService, AccountServiceClient accountServiceClient, PaymentServiceClient paymentServiceClient, PaymentNotificationListener paymentNotificationListener, RabbitTemplate rabbitTemplate) {
         this.personRepository = personRepository;
         this.personService = personService;
@@ -54,9 +55,9 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<Person>>updatePerson(@PathVariable String id, @Valid @RequestBody Person updatedPerson){
-        people = personService.updatePerson(id, updatedPerson);
-        return ResponseEntity.ok(people);
+    public ResponseEntity<Person>updatePerson(@PathVariable String id, @Valid @RequestBody Person updatedPerson){
+        Person updatePerson = personService.updatePerson(id, updatedPerson);
+        return ResponseEntity.ok(updatePerson);
     }
 
     @DeleteMapping("/{id}")
@@ -72,11 +73,11 @@ public class PersonController {
         return affirm;
     }
 
-    /*@PostMapping("/payments-notifications")
+    @PostMapping("/payments-notifications")
     public String notifyPayments(@Valid @RequestBody Payment payment){
         String notification = paymentServiceClient.getPayments(payment);
         return notification;
-    }*/
+    }
 
 
     @PostMapping("/sendToAccountService")

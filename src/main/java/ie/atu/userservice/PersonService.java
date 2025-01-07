@@ -28,12 +28,13 @@ public class PersonService {
         //return personRepository.findAll();
     }
 
-    public List<Person>updatePerson(String id, Person person){
+    public Person updatePerson(String id, Person person){
         if(personRepository.existsById(id)){
             person.setId(id);
             personRepository.save(person);
         }
-        return personRepository.findAll();
+        return personRepository.save(person);
+        //return personRepository.findAll();
     }
 
     public List<Person>deletePerson(String id){
