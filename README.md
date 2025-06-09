@@ -1,0 +1,1 @@
+This repository contains a microservice that is part of a CI/CD project comprising three microservices. The primary purpose of this microservice is to handle user registration within the application. The video demonstration for the application is available here: https://go.screenpal.com/watch/cTVjrkneBG2
